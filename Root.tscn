@@ -1,3 +1,128 @@
-[gd_scene format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/UI/TimeSlider.cs" type="Script" id=1]
+[ext_resource path="res://Sprites/test.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 32 )
 
 [node name="Root" type="Node2D"]
+
+[node name="UI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TimeControl" type="Panel" parent="UI"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 150.0
+margin_bottom = 50.0
+
+[node name="HSlider" type="HSlider" parent="UI/TimeControl"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 45.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+max_value = 4.0
+step = 0.1
+value = 1.0
+tick_count = 5
+ticks_on_borders = true
+script = ExtResource( 1 )
+
+[node name="Label" type="Label" parent="UI/TimeControl"]
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 40.0
+margin_bottom = -5.0
+text = "x1.0"
+align = 1
+valign = 1
+
+[node name="BuildPanel" type="Panel" parent="UI"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 10.0
+margin_top = 60.0
+margin_right = 195.0
+margin_bottom = 581.0
+
+[node name="CategoryTabs" type="TabContainer" parent="UI/BuildPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = 5.0
+margin_right = -7.0
+margin_bottom = -210.0
+tab_align = 0
+
+[node name="General" type="Tabs" parent="UI/BuildPanel/CategoryTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+tab_align = 0
+
+[node name="ItemList" type="ItemList" parent="UI/BuildPanel/CategoryTabs/General"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PlacementSettings" type="PanelContainer" parent="UI/BuildPanel"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = -75.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Symetry and snap options" type="Node" parent="UI/BuildPanel/PlacementSettings"]
+
+[node name="Stats" type="PanelContainer" parent="UI/BuildPanel"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = -205.0
+margin_right = -5.0
+margin_bottom = -80.0
+
+[node name="Contextual part stats" type="Node" parent="UI/BuildPanel/Stats"]
+
+[node name="Inspector" type="Panel" parent="UI"]
+margin_left = 628.0
+margin_top = 76.0
+margin_right = 767.0
+margin_bottom = 214.0
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/Inspector"]
+anchor_right = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = 25.0
+
+[node name="Line2D" type="Line2D" parent="UI/Inspector/PanelContainer"]
+points = PoolVector2Array( -153.157, 217.517, 9.31128, 10.8958 )
+default_color = Color( 0.419608, 0.419608, 0.419608, 1 )
+
+[node name="Popup context panel for parts, to see what they\'re doing" type="Node" parent="UI/Inspector"]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2( 442.803, 327.695 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="RigidBody2D"]
+position = Vector2( -442.803, -327.695 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="RigidBody2D"]
+texture = ExtResource( 2 )
