@@ -50,6 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\Control\BuildBehaviour.cs" />
+    <Compile Include="Scripts\Control\Camera.cs" />
+    <Compile Include="Scripts\Control\GyroBehaviour.cs" />
+    <Compile Include="Scripts\Node\Connection.cs" />
+    <Compile Include="Scripts\Node\Part.cs" />
+    <Compile Include="Scripts\Node\ThrustBehaviour.cs" />
+    <Compile Include="Scripts\UI\BuildPanel.cs" />
+    <Compile Include="Scripts\UI\Inspector.cs" />
     <Compile Include="Scripts\UI\TimeSlider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

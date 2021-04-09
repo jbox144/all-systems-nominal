@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/UI/Inspector.cs" type="Script" id=1]
+
+[node name="Inspector" type="Panel"]
+margin_right = 139.0
+margin_bottom = 138.0
+script = ExtResource( 1 )
+
+[node name="Header" type="PanelContainer" parent="."]
+anchor_right = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = 25.0
+mouse_default_cursor_shape = 13
+
+[node name="Close" type="Button" parent="Header"]
+margin_left = 108.0
+margin_top = 7.0
+margin_right = 128.0
+margin_bottom = 27.0
+size_flags_horizontal = 8
+text = "X"
+
+[node name="PointerLine" type="Line2D" parent="Header"]
+points = PoolVector2Array( 0, 0, 0, 0 )
+default_color = Color( 0.419608, 0.419608, 0.419608, 0.388235 )
+texture_mode = 25
+[connection signal="gui_input" from="Header" to="." method="_on_Header_gui_input"]
+[connection signal="pressed" from="Header/Close" to="." method="_on_Close_pressed"]
