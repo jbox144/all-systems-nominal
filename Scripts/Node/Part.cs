@@ -4,6 +4,12 @@ using System;
 
 public class Part : RigidBody2D
 {
+    [Godot.Export]
+    public string PartName = "Part"; // Partname, because you can't have nodes with the same name, but we want our ships having more than one part.
+    [Godot.Export]
+    public string PartDesc = "Desc"; // Partname, because you can't have nodes with the same name, but we want our ships having more than one part.
+
+
     public bool Picked = false; // Are we currently picked up by the mouse?
     public int PickedTime = 0;
     public bool QueRot = false; // Used by the input handler to tell the physics handler to rotate the next tick
@@ -95,8 +101,8 @@ public class Part : RigidBody2D
         {
             if(QueConnect) {
                 foreach(Node child in GetChildren()) {
-                    if (child is Connection connection) {
-                        Connection c = connection.FindLink();
+                    if (child is RigidConnection connection) {
+                        RigidConnection c = connection.FindLink();
                         if (c != null) {                        
                             Transform2D transform = new Transform2D(c.GlobalRotation - connection.Rotation + Mathf.Pi, GlobalPosition);
                             Transform = transform;

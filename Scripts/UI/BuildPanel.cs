@@ -1,36 +1,45 @@
-using System.ComponentModel.Design.Serialization;
 using Godot;
 using System;
 
 public class BuildPanel : Panel
 {
-    public static PackedScene part1 = (PackedScene)ResourceLoader.Load("res://Scenes/Part.tscn");
-    public static PackedScene part2 = (PackedScene)ResourceLoader.Load("res://Scenes/Part1.tscn");
-    public static PackedScene part3 = (PackedScene)ResourceLoader.Load("res://Scenes/Rocket.tscn");
-    public static PackedScene part4 = (PackedScene)ResourceLoader.Load("res://Scenes/Gyro.tscn");
-
+    public static Godot.Collections.Array<PackedScene> parts;
+    public GridContainer partlist;
+    public Panel statpanel;
 
     public override void _Ready()
     {
-        
+        parts = new Godot.Collections.Array<PackedScene> { // APPARENTLY I can't find a method to itterate over a folder's contents. So it's a code-side list. :^)
+            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Part.tscn"),
+            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Part1.tscn"),
+            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Gyro.tscn"),
+            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Rocket.tscn"),
+            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/FuelTank.tscn")
+        };
+
+        partlist = GetNode<GridContainer>("CategoryTabs/General/ItemList");
+        statpanel = GetNode<Panel>("Stats");
+
+        for(int i = 0; i < parts.Count; i++) {
+            Button button = new Button();
+            Part temp = (Part)parts[i].Instance(); // Maybe I should just make a dict for the basic stats of each part instead of pre-loading it...
+            button.Connect("button_down", this, nameof(ButtonDown), new Godot.Collections.Array{i});
+            button.Connect("mouse_entered", this, nameof(Hover), new Godot.Collections.Array{i});
+            button.Text = temp.PartName;
+            partlist.AddChild(button);
+            temp.Free();
+        }
     }
 
-    // Mmm yes, coding.
-    // I need to replace this with an array of parts asap.
-    public void _on_Button_button_down() {
-        CreatePart(part1);
+    public void ButtonDown(int index) {
+        CreatePart(parts[index]);
     }
 
-    public void _on_Button3_button_down() {
-        CreatePart(part2);
-    }
-
-    public void _on_Button4_button_down() {
-        CreatePart(part3);
-    }
-
-    public void _on_Button5_button_down() {
-        CreatePart(part4);
+    public void Hover(int index) {
+        Part temp = (Part)parts[index].Instance();
+        statpanel.GetNode<RichTextLabel>("Name").BbcodeText = temp.PartName;
+        statpanel.GetNode<RichTextLabel>("Desc").BbcodeText = temp.PartDesc;
+        temp.Free();
     }
 
     public void CreatePart(PackedScene part) {
