@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+
+// Handles part spawning, build panel UI, and eventually symetry controls
 public class BuildPanel : Panel
 {
     public static Godot.Collections.Array<PackedScene> parts;
@@ -14,7 +16,7 @@ public class BuildPanel : Panel
             (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Part1.tscn"),
             (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Gyro.tscn"),
             (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Rocket.tscn"),
-            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/FuelTank.tscn")
+            // (PackedScene)ResourceLoader.Load("res://Scenes/Parts/FuelTank.tscn") // Not ready yet. Talking to you, yay.
         };
 
         partlist = GetNode<GridContainer>("CategoryTabs/General/ItemList");
@@ -31,10 +33,12 @@ public class BuildPanel : Panel
         }
     }
 
+    // Triggers create part when the build panel is used
     public void ButtonDown(int index) {
         CreatePart(parts[index]);
     }
 
+    // When hovering over a part, show it's name and desc in the stats panel
     public void Hover(int index) {
         Part temp = (Part)parts[index].Instance();
         statpanel.GetNode<RichTextLabel>("Name").BbcodeText = temp.PartName;
@@ -42,6 +46,7 @@ public class BuildPanel : Panel
         temp.Free();
     }
 
+    // Creates a part and picks it with the mouse
     public void CreatePart(PackedScene part) {
         Part instance = (Part)part.Instance();
         instance.Picked = true;

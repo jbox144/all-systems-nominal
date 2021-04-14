@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using System;
 
+// Fluid storage. Handles the storage of fluids. Not ready yet.
 public class FluidStorage : Node
 {
     [Godot.Export]

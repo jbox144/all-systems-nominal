@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+// Context menu UI for right clicking parts. Will eventually handle adjustable sliders and stats.
 public class Inspector : Panel
 {
     public Line2D pointerLine;

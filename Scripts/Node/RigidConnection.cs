@@ -1,7 +1,9 @@
-using System.Net;
+using Godot.Collections;
+using System.Linq;
 using Godot;
 using System;
 
+// Rigid connection. Handles any building link with a hard connection between two parts
 public class RigidConnection : Connection
 {
     public PinJoint2D joint;
@@ -54,14 +56,15 @@ public class RigidConnection : Connection
     }
 
     new public void BreakLink() {
-        if (Connections[0] != null) {
-            if (((RigidConnection)Connections[0]).joint != null) {
-                ((RigidConnection)Connections[0]).joint.QueueFree();
+        if (Connections.Count > 0) {
+            if ((Connections[0] as RigidConnection).joint != null) {
+                (Connections[0] as RigidConnection).joint.QueueFree();
             }
         }
         if (joint != null) {
             joint.QueueFree();
         }
+
         base.BreakLink();
     }
 }

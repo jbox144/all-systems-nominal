@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using Godot;
 using System;
 
+// Base connection class, used by the dynamic connection and rigid connection.
+// Using a base class so fluid transfer and power transfer can use either connection type
 public class Connection : Node2D
 {
     public Godot.Collections.Array<Connection> Connections = new Godot.Collections.Array<Connection>();
@@ -17,18 +20,20 @@ public class Connection : Node2D
     }
 
     public void MakeLink(Connection connection) { // Base connections are intended for singular connections. Some require plural connections.
-        if (Connections[0] != null) {
+        if (Connections.Count > 0) {
             BreakLink();
         }
 
-        Connections[0] = connection;
-        Connections[0].Connections[0] = this;
+        Connections.Add(connection);
+        Connections[0].Connections.Add(this);
     }
 
     public void BreakLink() {
-        if (Connections[0] != null) {
-            Connections[0].Connections[0] = null;
+        if (Connections.Count > 0) {
+            if (Connections[0].Connections.Count > 0) {
+                Connections[0].Connections.RemoveAt(0);
+            }
+            Connections.RemoveAt(0);
         }
-        Connections[0] = null;
     }
 }

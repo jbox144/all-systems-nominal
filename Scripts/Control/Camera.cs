@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+// Handles camera movement
 public class Camera : Camera2D
 {
     public bool dragging = false;

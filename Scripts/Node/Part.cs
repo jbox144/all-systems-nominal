@@ -2,12 +2,14 @@ using System.ComponentModel;
 using Godot;
 using System;
 
+
+// Base part class. Handles building logic too, because I can't translate parts without directly interfacing it's physics process. Price you pay I guess.
 public class Part : RigidBody2D
 {
     [Godot.Export]
-    public string PartName = "Part"; // Partname, because you can't have nodes with the same name, but we want our ships having more than one part.
+    public string PartName = "Part"; // Part name, because you can't have nodes with the same name, but we want our ships having more than one part.
     [Godot.Export]
-    public string PartDesc = "Desc"; // Partname, because you can't have nodes with the same name, but we want our ships having more than one part.
+    public string PartDesc = "Desc"; // Part description
 
 
     public bool Picked = false; // Are we currently picked up by the mouse?
@@ -58,7 +60,7 @@ public class Part : RigidBody2D
 
                 if (Picked) {
                     foreach(Node child in GetChildren()) {
-                        if (child is Connection connection) {
+                        if (child is RigidConnection connection) {
                             connection.BreakLink();
                         }
                     }
