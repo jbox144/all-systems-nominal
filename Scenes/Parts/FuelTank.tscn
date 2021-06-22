@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Node/Part.cs" type="Script" id=1]
-[ext_resource path="res://Sprites/test.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Tank.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Node/RigidConnection.cs" type="Script" id=3]
 [ext_resource path="res://Scripts/Node/FluidStorage.cs" type="Script" id=4]
 [ext_resource path="res://Scripts/Node/DynamicConnection.cs" type="Script" id=5]
@@ -23,22 +23,18 @@ PartDesc = "A fuel tank to store fuel"
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 64, 64 )
 
 [node name="RigidConnection5" type="Node2D" parent="."]
-editor/display_folded = true
 modulate = Color( 1, 0, 0, 1 )
 self_modulate = Color( 1, 0, 0, 1 )
 material = SubResource( 2 )
 position = Vector2( 0, 32 )
 script = ExtResource( 3 )
 
-[node name="Polygon2D2" type="Polygon2D" parent="RigidConnection5"]
-color = Color( 1, 0, 0, 1 )
-polygon = PoolVector2Array( -10, 0, 10, 0, 0, 20 )
-
 [node name="RigidConnection2" type="Node2D" parent="."]
-editor/display_folded = true
 modulate = Color( 1, 0, 0, 1 )
 self_modulate = Color( 1, 0, 0, 1 )
 material = SubResource( 2 )
@@ -46,22 +42,13 @@ position = Vector2( 32, 0 )
 rotation = -1.5708
 script = ExtResource( 3 )
 
-[node name="Polygon2D2" type="Polygon2D" parent="RigidConnection2"]
-color = Color( 1, 0, 0, 1 )
-polygon = PoolVector2Array( -10, 0, 10, 0, 0, 20 )
-
 [node name="RigidConnection3" type="Node2D" parent="."]
-editor/display_folded = true
 modulate = Color( 1, 0, 0, 1 )
 self_modulate = Color( 1, 0, 0, 1 )
 material = SubResource( 2 )
 position = Vector2( 0, -32 )
 rotation = 3.14159
 script = ExtResource( 3 )
-
-[node name="Polygon2D2" type="Polygon2D" parent="RigidConnection3"]
-color = Color( 1, 0, 0, 1 )
-polygon = PoolVector2Array( -10, 0, 10, 0, 0, 20 )
 
 [node name="RigidConnection4" type="Node2D" parent="."]
 modulate = Color( 1, 0, 0, 1 )
@@ -70,10 +57,6 @@ material = SubResource( 2 )
 position = Vector2( -32, 0 )
 rotation = 1.5708
 script = ExtResource( 3 )
-
-[node name="Polygon2D2" type="Polygon2D" parent="RigidConnection4"]
-color = Color( 1, 0, 0, 1 )
-polygon = PoolVector2Array( -10, 0, 10, 0, 0, 20 )
 
 [node name="FluidStorage" type="Node2D" parent="."]
 script = ExtResource( 4 )

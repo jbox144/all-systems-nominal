@@ -1,14 +1,40 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/Node/Part.cs" type="Script" id=1]
 [ext_resource path="res://Scripts/Node/RigidConnection.cs" type="Script" id=2]
 [ext_resource path="res://Scripts/Control/ThrustBehaviour.cs" type="Script" id=3]
 [ext_resource path="res://Scripts/Node/DynamicConnection.cs" type="Script" id=4]
+[ext_resource path="res://Sprites/RocketFrame.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/RocketNozzle.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 32, 26 )
 
 [sub_resource type="CanvasItemMaterial" id=2]
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.364829, 0.648294, 1 )
+colors = PoolColorArray( 0, 1, 1, 1, 1, 0, 0, 1, 0.96875, 1, 0, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 1 ), 0.0, -1.0, 0, 1, Vector2( 1, 0 ), -1.0, 0.0, 1, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 100.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 11.42
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 4 )
 
 [node name="RigidBody2D" type="RigidBody2D"]
 position = Vector2( 442.803, 327.695 )
@@ -20,11 +46,8 @@ PartName = "Rocket"
 PartDesc = "Rocket"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -5 )
 shape = SubResource( 1 )
-
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color( 0.529412, 0.529412, 0.529412, 1 )
-polygon = PoolVector2Array( 16, 16, -16, 16, -32, -32, 32, -32 )
 
 [node name="Connection" type="Node2D" parent="."]
 modulate = Color( 1, 0, 0, 1 )
@@ -33,10 +56,6 @@ material = SubResource( 2 )
 position = Vector2( 0, -32 )
 rotation = 3.14159
 script = ExtResource( 2 )
-
-[node name="Polygon2D3" type="Polygon2D" parent="Connection"]
-color = Color( 1, 0, 0, 1 )
-polygon = PoolVector2Array( -10, 0, 10, 0, 0, 20 )
 
 [node name="ThrustBehaviour" type="Node2D" parent="."]
 script = ExtResource( 3 )
@@ -58,5 +77,22 @@ margin_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
 flat = true
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 0, -8 )
+scale = Vector2( 2, 2 )
+z_index = -1
+texture = ExtResource( 6 )
+
+[node name="Particles2D" type="Particles2D" parent="Sprite2"]
+rotation = 1.5708
+z_index = -2
+emitting = false
+amount = 32
+process_material = SubResource( 7 )
 [connection signal="button_down" from="ThrustBehaviour/Connector/Button" to="ThrustBehaviour/Connector" method="_on_button_down"]
 [connection signal="button_up" from="ThrustBehaviour/Connector/Button" to="ThrustBehaviour/Connector" method="_on_button_up"]
