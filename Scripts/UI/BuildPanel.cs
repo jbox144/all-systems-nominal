@@ -16,7 +16,7 @@ public class BuildPanel : Panel
             (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Part1.tscn"),
             (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Gyro.tscn"),
             (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Rocket.tscn"),
-            // (PackedScene)ResourceLoader.Load("res://Scenes/Parts/FuelTank.tscn") // Not ready yet. Talking to you, yay.
+            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/FuelTank.tscn")
         };
 
         partlist = GetNode<GridContainer>("CategoryTabs/General/ItemList");

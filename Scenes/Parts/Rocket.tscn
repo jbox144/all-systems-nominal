@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Node/Part.cs" type="Script" id=1]
 [ext_resource path="res://Scripts/Node/RigidConnection.cs" type="Script" id=2]
 [ext_resource path="res://Scripts/Control/ThrustBehaviour.cs" type="Script" id=3]
-
+[ext_resource path="res://Scripts/Node/DynamicConnection.cs" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
@@ -38,5 +38,25 @@ script = ExtResource( 2 )
 color = Color( 1, 0, 0, 1 )
 polygon = PoolVector2Array( -10, 0, 10, 0, 0, 20 )
 
-[node name="ThrustBehaviour" type="Node" parent="."]
+[node name="ThrustBehaviour" type="Node2D" parent="."]
 script = ExtResource( 3 )
+
+[node name="Connector" type="Node2D" parent="ThrustBehaviour"]
+position = Vector2( 0, -16 )
+script = ExtResource( 4 )
+DrawColor = Color( 1, 0, 0, 1 )
+
+[node name="Button" type="Button" parent="ThrustBehaviour/Connector"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+[connection signal="button_down" from="ThrustBehaviour/Connector/Button" to="ThrustBehaviour/Connector" method="_on_button_down"]
+[connection signal="button_up" from="ThrustBehaviour/Connector/Button" to="ThrustBehaviour/Connector" method="_on_button_up"]

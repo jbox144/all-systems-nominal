@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/Node/DynamicConnection.cs" type="Script" id=1]
+
+[node name="Connector" type="Node2D"]
+position = Vector2( -16, 16 )
+script = ExtResource( 1 )
+DrawColor = Color( 1, 0, 0, 1 )
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+[connection signal="button_down" from="Button" to="." method="_on_button_down"]
+[connection signal="button_up" from="Button" to="." method="_on_button_up"]
