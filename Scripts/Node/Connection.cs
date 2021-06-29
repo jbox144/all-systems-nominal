@@ -10,7 +10,13 @@ public class Connection : Node2D
 
     public static Godot.Collections.Array<Connection> GlobalConnections = new Godot.Collections.Array<Connection>();
 
-    public override void _Ready() {
+    [Godot.Export]
+    public Color color;
+
+    [Godot.Export]
+    public int Mask; // Mask integer - so you can't connect fuel pipes to electricals
+
+    public override void _EnterTree() {
         GlobalConnections.Add(this);
     }
 
@@ -35,5 +41,13 @@ public class Connection : Node2D
             }
             Connections.RemoveAt(0);
         }
+    }
+
+    public Part GetPart() {
+        Node n = this;
+        while(n != null && !(n is Part)) {
+            n = n.GetParentOrNull<Node>();
+        }
+        return n as Part;
     }
 }

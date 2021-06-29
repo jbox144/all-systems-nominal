@@ -5,19 +5,23 @@ using System;
 // Handles part spawning, build panel UI, and eventually symetry controls
 public class BuildPanel : Panel
 {
-    public static Godot.Collections.Array<PackedScene> parts;
+    public static Godot.Collections.Array<PackedScene> parts = new Godot.Collections.Array<PackedScene>();
+
+    [Godot.Export]
+    public string[] scenePaths;
+
     public GridContainer partlist;
     public Panel statpanel;
 
     public override void _Ready()
     {
-        parts = new Godot.Collections.Array<PackedScene> { // APPARENTLY I can't find a method to itterate over a folder's contents. So it's a code-side list. :^)
-            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Part.tscn"),
-            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Part1.tscn"),
-            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Gyro.tscn"),
-            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/Rocket.tscn"),
-            (PackedScene)ResourceLoader.Load("res://Scenes/Parts/FuelTank.tscn")
-        };
+        foreach(string s in scenePaths) {
+            if(ResourceLoader.Exists(s)) {
+                parts.Add((PackedScene)ResourceLoader.Load(s));
+            } else {
+                GD.PrintErr("Part not found: ", s);
+            }
+        }
 
         partlist = GetNode<GridContainer>("CategoryTabs/General/ItemList");
         statpanel = GetNode<Panel>("Stats");
@@ -48,11 +52,10 @@ public class BuildPanel : Panel
 
     // Creates a part and picks it with the mouse
     public void CreatePart(PackedScene part) {
-        Part instance = (Part)part.Instance();
-        instance.Picked = true;
-        instance.CustomIntegrator = true;
-        instance.CollisionLayer = 1;
-        GetTree().GetRoot().AddChild(instance);
-        instance.GlobalPosition = GetGlobalMousePosition();
+        Part instance = part.Instance() as Part;
+        GD.Print(instance);
+        
+        BuildBehaviour behaviour = GetNode<BuildBehaviour>("/root/Root/BuildBehaviour");
+        behaviour.PickPart(instance);
     }
 }

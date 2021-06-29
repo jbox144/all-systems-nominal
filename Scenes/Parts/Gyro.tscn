@@ -1,66 +1,31 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Node/Part.cs" type="Script" id=1]
-[ext_resource path="res://Scripts/Node/RigidConnection.cs" type="Script" id=2]
-[ext_resource path="res://Scripts/Node/Connection.cs" type="Script" id=3]
-[ext_resource path="res://Scripts/Control/GyroBehaviour.cs" type="Script" id=4]
-[ext_resource path="res://Sprites/Frame.png" type="Texture" id=5]
-[ext_resource path="res://Sprites/Gyro.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/Control/GyroBehaviour.cs" type="Script" id=2]
+[ext_resource path="res://Sprites/Gyro.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/Node/RigidConnection.cs" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 8, 8 )
 
 [sub_resource type="CanvasItemMaterial" id=2]
 
-[node name="RigidBody2D2" type="RigidBody2D"]
-z_index = -1
-input_pickable = true
-can_sleep = false
+[node name="Gyro" type="CollisionShape2D"]
+shape = SubResource( 1 )
 script = ExtResource( 1 )
 PartName = "Gyro"
-PartDesc = "It spins"
+PartDesc = "A gyroscope"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+[node name="GyroBehaviour" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
 
 [node name="Connection" type="Node2D" parent="."]
 modulate = Color( 1, 0, 0, 1 )
 self_modulate = Color( 1, 0, 0, 1 )
 material = SubResource( 2 )
-position = Vector2( 0, 32 )
-script = ExtResource( 2 )
-
-[node name="Connection2" type="Node2D" parent="."]
-modulate = Color( 1, 0, 0, 1 )
-self_modulate = Color( 1, 0, 0, 1 )
-material = SubResource( 2 )
-position = Vector2( 32, 0 )
-rotation = -1.5708
-script = ExtResource( 3 )
-
-[node name="Connection3" type="Node2D" parent="."]
-modulate = Color( 1, 0, 0, 1 )
-self_modulate = Color( 1, 0, 0, 1 )
-material = SubResource( 2 )
-position = Vector2( 0, -32 )
-rotation = 3.14159
-script = ExtResource( 2 )
-
-[node name="Connection4" type="Node2D" parent="."]
-modulate = Color( 1, 0, 0, 1 )
-self_modulate = Color( 1, 0, 0, 1 )
-material = SubResource( 2 )
-position = Vector2( -32, 0 )
-rotation = 1.5708
-script = ExtResource( 2 )
-
-[node name="GyroBehaviour" type="Node" parent="."]
 script = ExtResource( 4 )
-
-[node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 2, 2 )
-texture = ExtResource( 5 )
-
-[node name="Sprite2" type="Sprite" parent="."]
-scale = Vector2( 2, 2 )
-texture = ExtResource( 6 )
+color = Color( 0, 0, 1, 1 )
+Mask = 1

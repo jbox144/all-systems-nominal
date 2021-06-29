@@ -7,9 +7,6 @@ public class DynamicConnection : Connection
 {
     public bool Picked = false; // Are we currently picked up by the mouse?
     public int PickedTime = 0;
-    
-    [Godot.Export]
-    public Color DrawColor;
 
     
     public override void _Ready() {
@@ -22,14 +19,14 @@ public class DynamicConnection : Connection
     }
 
     public override void _Draw() {
-        DrawPolygon(new Vector2[] { new Vector2 (-10, 0), new Vector2 (0, 10), new Vector2 (10, 0), new Vector2 (0, -10)}, new Color[] { DrawColor });
+        DrawPolygon(new Vector2[] { new Vector2 (-10, 0), new Vector2 (0, 10), new Vector2 (10, 0), new Vector2 (0, -10)}, new Color[] { color });
 
         if (Picked) {
-            DrawLine(new Vector2(0, 0),  GetLocalMousePosition(), DrawColor, 4);
+            DrawLine(new Vector2(0, 0),  GetLocalMousePosition(), color, 4);
         }
 
         foreach (Connection c in Connections) {
-            DrawLine(new Vector2(0, 0), ToLocal(c.GlobalPosition), DrawColor, 4);
+            DrawLine(new Vector2(0, 0), ToLocal(c.GlobalPosition), color, 4);
         }
     }
 
@@ -62,6 +59,10 @@ public class DynamicConnection : Connection
             }
 
             if (c.GetParent() == GetParent()) { // Checks if the other connection is part of the same parent
+                continue;
+            }
+
+            if (c.Mask == Mask) {
                 continue;
             }
 

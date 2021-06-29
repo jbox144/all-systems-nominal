@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Control/Camera.cs" type="Script" id=1]
 [ext_resource path="res://Scripts/UI/TimeSlider.cs" type="Script" id=2]
 [ext_resource path="res://Scripts/UI/BuildPanel.cs" type="Script" id=3]
+[ext_resource path="res://Scripts/Control/BuildBehaviour.cs" type="Script" id=4]
+[ext_resource path="res://Scenes/Vessel.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -59,6 +61,7 @@ margin_top = 60.0
 margin_right = 208.0
 margin_bottom = 581.0
 script = ExtResource( 3 )
+scenePaths = PoolStringArray( "res://Scenes/Parts/Part1.tscn", "res://Scenes/Parts/Gyro.tscn" )
 
 [node name="CategoryTabs" type="TabContainer" parent="Camera2D/UI/BuildPanel"]
 anchor_right = 1.0
@@ -140,3 +143,8 @@ shape = SubResource( 1 )
 [node name="Polygon2D" type="Polygon2D" parent="StaticBody2D"]
 color = Color( 0.12549, 0.611765, 0.705882, 1 )
 polygon = PoolVector2Array( 10, 10, -10, 10, -10, -10, 10, -10 )
+
+[node name="BuildBehaviour" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="Vessel" parent="." instance=ExtResource( 5 )]

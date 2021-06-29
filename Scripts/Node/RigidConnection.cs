@@ -7,6 +7,34 @@ using System;
 public class RigidConnection : Connection
 {
     public PinJoint2D joint;
+    
+    [Godot.Export]
+    public bool Opposites = true; // Whether this connection will orient itself opposite the joinee
+
+    public override void _Ready()
+    {
+        BuildBehaviour.mainBehaviour.Connect(nameof(BuildBehaviour.PickedPart), this, nameof(this.ShowSelf));
+        BuildBehaviour.mainBehaviour.Connect(nameof(BuildBehaviour.DroppedPart), this, nameof(this.HideSelf));
+    }
+
+    // Why can't I connect signals directly?!
+    public void HideSelf() {
+        Hide(); 
+    }
+    
+    public void ShowSelf() {
+        if (Connections.Count() == 0) {
+            Show();
+        }
+    }
+
+    public override void _Draw()
+    {
+        if (Opposites)
+            DrawColoredPolygon(new Vector2[] {new Vector2(-5, 0), new Vector2(0, 10), new Vector2(5, 0)}, color);
+        else
+            DrawColoredPolygon(new Vector2[] {new Vector2(-5, 0), new Vector2(0, 5), new Vector2(5, 0), new Vector2(0, -5)}, color);
+    }
 
     public RigidConnection FindLink() {
         foreach(Connection c in GlobalConnections) {
@@ -21,8 +49,22 @@ public class RigidConnection : Connection
             if (c.GetParent() == GetParent()) { // Checks if the other connection is part of the same parent
                 continue;
             }
-            
-            if ((GlobalRotation - c.GlobalRotation - Math.PI) % (Math.PI*2) > Math.PI * 0.25) { // Checks if we're facing the opposite angle of the connection. Don't ask me about the math, I can't remember how it works
+
+            if (c.Mask != Mask) {
+                continue;
+            }
+
+            if (c.Connections.Count > 0) {
+                continue;
+            }
+
+            // Stackoverflow is a life saver
+            // https://stackoverflow.com/questions/1878907/how-can-i-find-the-difference-between-two-angles
+
+            float a = c.GlobalRotation - GlobalRotation;
+            a += (a > Mathf.Pi) ? -Mathf.Pi * 2 : (a<-Mathf.Pi) ? Mathf.Pi * 2 : 0;
+
+            if (a < Mathf.Pi * 0.75f && !Opposites) { // Checks if we're facing the opposite angle of the connection. 
                 continue;
             }
 
@@ -30,47 +72,8 @@ public class RigidConnection : Connection
             if (GlobalPosition.DistanceSquaredTo(c.GlobalPosition) < 20*20) { // Checks if we're close enough to this connection
                 return c as RigidConnection;
             }
-
         }
 
         return null;
-    }
-
-    public void MakeLink(RigidConnection connection) {
-        base.MakeLink(connection);
-        
-        joint = new PinJoint2D();
-        connection.joint = new PinJoint2D();
-        
-        AddChild(joint);
-        joint.Position = new Vector2(10, 0);
-        joint.Bias = 0.5f;
-
-        joint.SetNodeA(this.GetParent<RigidBody2D>().GetPath());
-        joint.SetNodeB(connection.GetParent<RigidBody2D>().GetPath());
-
-        joint.DisableCollision = false;
-
-        connection.AddChild(connection.joint);
-        connection.joint.Position = new Vector2(10, 0);
-        connection.joint.Bias = 0.5f;
-        
-        connection.joint.SetNodeA(connection.GetParent<RigidBody2D>().GetPath());
-        connection.joint.SetNodeB(this.GetParent<RigidBody2D>().GetPath());
-
-        connection.joint.DisableCollision = false;
-    }
-
-    new public void BreakLink() {
-        if (Connections.Count > 0) {
-            if ((Connections[0] as RigidConnection).joint != null) {
-                (Connections[0] as RigidConnection).joint.QueueFree();
-            }
-        }
-        if (joint != null) {
-            joint.QueueFree();
-        }
-
-        base.BreakLink();
     }
 }
